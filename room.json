@@ -603,6 +603,17 @@
                  "width":16,
                  "x":304,
                  "y":128
+                }, 
+                {
+                 "height":36,
+                 "id":82,
+                 "name":"DoorRight",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":368,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -611,7 +622,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":79,
+ "nextobjectid":83,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -619,7 +630,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/livingroom.tsx"
+         "source":"..\/livingroom.tsx"
         }],
  "tilewidth":16,
  "type":"map",
