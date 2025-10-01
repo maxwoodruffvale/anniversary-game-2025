@@ -37,39 +37,57 @@
     }
 
     function drawMap() {
-  const map = mapData;
-  const tileset = map.tilesets[0];
-  const tileWidth = map.tilewidth;
-  const tileHeight = map.tileheight;
-  const columns = Math.floor(tilesetImg.width / tileWidth);
+        const map = mapData;
+        const tileset = map.tilesets[0];
+        const tileWidth = map.tilewidth;
+        const tileHeight = map.tileheight;
+        const columns = Math.floor(tilesetImg.width / tileWidth);
 
-  // Loop over each layer
-  map.layers.forEach(layer => {
-    if (layer.type !== "tilelayer" || !layer.visible) return;
+        // Loop over each layer
+        map.layers.forEach(layer => {
+            if (!layer.visible) return;
 
-    for (let row = 0; row < layer.height; row++) {
-      for (let col = 0; col < layer.width; col++) {
-        const tileIndex = row * layer.width + col;
-        const tileId = layer.data[tileIndex];
+            if (layer.type === "tilelayer") {
+                // your existing tile drawing code
+                for (let row = 0; row < layer.height; row++) {
+                    for (let col = 0; col < layer.width; col++) {
+                        const tileIndex = row * layer.width + col;
+                        const tileId = layer.data[tileIndex];
+                        if (tileId === 0) continue;
 
-        if (tileId === 0) continue; // 0 = empty tile
+                        const tileX = (tileId - 1) % columns;
+                        const tileY = Math.floor((tileId - 1) / columns);
 
-        const tsIndex = tileId - tileset.firstgid;
-        if (tsIndex < 0) continue;
+                        ctx.drawImage(
+                            tilesetImg,
+                            tileX * tileWidth, tileY * tileHeight,
+                            tileWidth, tileHeight,
+                            col * tileWidth, row * tileHeight,
+                            tileWidth, tileHeight
+                        );
+                    }
+                }
+            } 
+            else if (layer.type === "objectgroup") {
+                // Draw objects (as rectangles for now)
+                layer.objects.forEach(obj => {
+                    if (!obj.gid) return; // skip objects without a tile
 
-        const sx = (tsIndex % columns) * tileWidth;
-        const sy = Math.floor(tsIndex / columns) * tileHeight;
+                    const tileId = obj.gid;
+                    const tileX = (tileId - 1) % columns;
+                    const tileY = Math.floor((tileId - 1) / columns);
 
-        ctx.drawImage(
-          tilesetImg,
-          sx, sy, tileWidth, tileHeight,
-          col * tileWidth, row * tileHeight,
-          tileWidth, tileHeight
-        );
-      }
+                    ctx.drawImage(
+                        tilesetImg,
+                        tileX * tileWidth, tileY * tileHeight,
+                        tileWidth, tileHeight,
+                        obj.x, obj.y - tileHeight, // Tiled y is bottom-left for tile objects
+                        tileWidth, tileHeight
+                    );
+                });
+            }
+        });
     }
-  });
-}
 
 
 
