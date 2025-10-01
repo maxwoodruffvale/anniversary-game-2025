@@ -107,8 +107,125 @@ console.log("Click at:", x, y);
         y <= obj.y + obj.height
     ) {
         console.log("Clicked:", obj.name);
+        loadMinigame(obj.name);
     }
     }
 });
+
+
+function loadMinigame(interactableName) {
+    console.log("Loading minigame for:", interactableName);
+    switch (interactableName) {
+    case "ComputerDesk":
+        handleEmojiMinigame();
+        break;
+    default:
+        alert("No minigame assigned for " + interactableName);
+    }
+}
+
+const emojiQuizData = [
+    { emojis: "🍦🌙🔵👅", answer: "After’s ice cream" },
+    { emojis: "🎬🏈😱", answer: "Him movie" },
+    { emojis: "🎬🐺🙋‍♂️🪓", answer: "Creep movie" },
+    { emojis: "📺🐦🦝", answer: "Regular show" },
+    { emojis: "👧🧒👦🏼🏫📆", answer: "Her children at the school she teaches at" },
+    { emojis: "“Can we?”", answer: "We have to" },
+    { emojis: "🧊🟤🍯🥣🥛☕️", answer: "Iced brown sugar oat milk shaken espresso from starbucks" },
+    { emojis: "🎮🧸🎥👻", answer: "FNAF games and movie" },
+    { emojis: "🏡🧀🥣", answer: "Cottage cheese" },
+    { emojis: "🐕🟤🟡", answer: "Mocha and Teddy" },
+    { emojis: "🤣👉💪", answer: "Wenis Elbow" },
+    { emojis: "🐀🧀🙋‍♂️", answer: "A rat" },
+    { emojis: "🙉👂🙉", answer: "Covering you ears" },
+    { emojis: "🎬👩‍❤️‍👨🦴", answer: "Together movie" },
+];
+
+let currentQuizIndex = 0;
+
+function handleEmojiMinigame() {
+// Prevent multiple overlays
+    if (document.getElementById("emojiQuizOverlay")) return;
+
+    // Overlay container
+    const overlay = document.createElement("div");
+    overlay.id = "emojiQuizOverlay";
+    Object.assign(overlay.style, {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        background: "rgba(0,0,0,0.8) url('tv.png') center center / contain no-repeat",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 9999,
+        color: "#fff",
+        textAlign: "center",
+        padding: "20px",
+    });
+
+    // Question display
+    const questionEl = document.createElement("div");
+    questionEl.id = "emojiQuestion";
+    questionEl.style.fontSize = "2rem";
+    questionEl.style.marginBottom = "20px";
+    overlay.appendChild(questionEl);
+
+    // Input field
+    const inputEl = document.createElement("input");
+    inputEl.type = "text";
+    inputEl.placeholder = "Type your answer here";
+    inputEl.style.fontSize = "1rem";
+    inputEl.style.padding = "10px";
+    inputEl.style.width = "300px";
+    overlay.appendChild(inputEl);
+
+    // Submit button
+    const submitBtn = document.createElement("button");
+    submitBtn.innerText = "Submit";
+    submitBtn.style.marginTop = "10px";
+    submitBtn.onclick = () => checkAnswer(inputEl.value.trim());
+    overlay.appendChild(submitBtn);
+
+    // Close button
+    const closeBtn = document.createElement("button");
+    closeBtn.innerText = "Close Quiz";
+    closeBtn.style.marginTop = "10px";
+    closeBtn.onclick = () => document.body.removeChild(overlay);
+    overlay.appendChild(closeBtn);
+
+    document.body.appendChild(overlay);
+
+    // Start quiz
+    currentQuizIndex = 0;
+    showQuestion();
+}
+
+function showQuestion() {
+    const questionEl = document.getElementById("emojiQuestion");
+    questionEl.innerText = emojiQuizData[currentQuizIndex].emojis;
+    document.querySelector("#emojiQuizOverlay input").value = "";
+    document.querySelector("#emojiQuizOverlay input").focus();
+}
+
+// Check user's answer
+function checkAnswer(userAnswer) {
+    const correctAnswer = emojiQuizData[currentQuizIndex].answer.toLowerCase();
+    if (userAnswer.toLowerCase() === correctAnswer) {
+        currentQuizIndex++;
+        if (currentQuizIndex >= emojiQuizData.length) {
+            alert("🎉 You win! All answers correct!");
+            document.getElementById("emojiQuizOverlay").remove();
+        } else {
+            showQuestion();
+        }
+    } else {
+        alert("Incorrect! Try again.");
+    }
+}
+
 
 loadMap();
