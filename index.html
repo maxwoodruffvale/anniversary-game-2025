@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tiled Room</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; margin: auto; background: #000; }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let mapData = null;
+    let tilesetImg = new Image();
+    let interactables = [];
+
+    async function loadMap() {
+      // Load JSON
+      const response = await fetch("room.json");
+      mapData = await response.json();
+
+      // Set canvas size to map size
+      canvas.width = mapData.width * mapData.tilewidth;
+      canvas.height = mapData.height * mapData.tileheight;
+
+      // Load tileset image
+      tilesetImg.src = "tileset.png";
+      tilesetImg.onload = () => {
+        drawMap();
+        extractInteractables();
+      };
+    }
+
+    function drawMap() {
+  const map = mapData;
+  const tileset = map.tilesets[0];
+  const tileWidth = map.tilewidth;
+  const tileHeight = map.tileheight;
+  const columns = Math.floor(tilesetImg.width / tileWidth);
+
+  // Loop over each layer
+  map.layers.forEach(layer => {
+    if (layer.type !== "tilelayer" || !layer.visible) return;
+
+    for (let row = 0; row < layer.height; row++) {
+      for (let col = 0; col < layer.width; col++) {
+        const tileIndex = row * layer.width + col;
+        const tileId = layer.data[tileIndex];
+
+        if (tileId === 0) continue; // 0 = empty tile
+
+        const tsIndex = tileId - tileset.firstgid;
+        if (tsIndex < 0) continue;
+
+        const sx = (tsIndex % columns) * tileWidth;
+        const sy = Math.floor(tsIndex / columns) * tileHeight;
+
+        ctx.drawImage(
+          tilesetImg,
+          sx, sy, tileWidth, tileHeight,
+          col * tileWidth, row * tileHeight,
+          tileWidth, tileHeight
+        );
+      }
+    }
+  });
+}
+
+
+
+    function extractInteractables() {
+      const objectLayer = mapData.layers.find(l => l.name === "interactables");
+      if (!objectLayer) return;
+
+      interactables = objectLayer.objects.map(obj => ({
+        name: obj.name,
+        x: obj.x,
+        y: obj.y,
+        width: obj.width,
+        height: obj.height
+      }));
+    }
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      for (let obj of interactables) {
+        if (
+          x >= obj.x &&
+          x <= obj.x + obj.width &&
+          y >= obj.y &&
+          y <= obj.y + obj.height
+        ) {
+          console.log("Clicked:", obj.name);
+        }
+      }
+    });
+
+    loadMap();
+  </script>
+</body>
+</html>
