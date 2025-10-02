@@ -125,20 +125,18 @@ function loadMinigame(interactableName) {
 }
 
 const emojiQuizData = [
-    { emojis: "🍦🌙🔵👅", answer: "After’s ice cream" },
-    { emojis: "🎬🏈😱", answer: "Him movie" },
-    { emojis: "🎬🐺🙋‍♂️🪓", answer: "Creep movie" },
+    { emojis: "🍦🌙🔵👅", answer: "After’s" },
+    { emojis: "🎬🏈😱", answer: "Him" },
+    { emojis: "🎬🐺🙋‍♂️🪓", answer: "Creep" },
     { emojis: "📺🐦🦝", answer: "Regular show" },
-    { emojis: "👧🧒👦🏼🏫📆", answer: "Her children at the school she teaches at" },
-    { emojis: "“Can we?”", answer: "We have to" },
-    { emojis: "🧊🟤🍯🥣🥛☕️", answer: "Iced brown sugar oat milk shaken espresso from starbucks" },
-    { emojis: "🎮🧸🎥👻", answer: "FNAF games and movie" },
+    { emojis: "👧🧒👦🏼🏫📆", answer: "Children" },
+    { emojis: "🧊🟤🍯🥣🥛☕️", answer: "Iced brown sugar oat milk shaken espresso" },
+    { emojis: "🎮🧸🎥👻", answer: "FNAF" },
     { emojis: "🏡🧀🥣", answer: "Cottage cheese" },
     { emojis: "🐕🟤🟡", answer: "Mocha and Teddy" },
-    { emojis: "🤣👉💪", answer: "Wenis Elbow" },
-    { emojis: "🐀🧀🙋‍♂️", answer: "A rat" },
-    { emojis: "🙉👂🙉", answer: "Covering you ears" },
-    { emojis: "🎬👩‍❤️‍👨🦴", answer: "Together movie" },
+    { emojis: "🤣👉💪", answer: "Wenis" },
+    { emojis: "🐀🧀🙋‍♂️", answer: "Rat" },
+    { emojis: "🎬👩‍❤️‍👨🦴", answer: "Together" },
 ];
 
 let currentQuizIndex = 0;
@@ -156,7 +154,7 @@ function handleEmojiMinigame() {
         left: 0,
         width: "100%",
         height: "100%",
-        background: "rgba(0,0,0,0.8) url('tv.png') center center / contain no-repeat",
+        background: "rgba(0,0,0,0.8) url('tv.png') center 60% / 80% no-repeat",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -194,7 +192,7 @@ function handleEmojiMinigame() {
     const closeBtn = document.createElement("button");
     closeBtn.innerText = "Close Quiz";
     closeBtn.style.marginTop = "10px";
-    closeBtn.onclick = () => document.body.removeChild(overlay);
+    closeBtn.onclick = () => document.body.removeChild(overlay );
     overlay.appendChild(closeBtn);
 
     document.body.appendChild(overlay);
@@ -213,8 +211,11 @@ function showQuestion() {
 
 // Check user's answer
 function checkAnswer(userAnswer) {
-    const correctAnswer = emojiQuizData[currentQuizIndex].answer.toLowerCase();
-    if (userAnswer.toLowerCase() === correctAnswer) {
+    const correctAnswer = normalizeAnswer(emojiQuizData[currentQuizIndex].answer);
+    userAnswer = normalizeAnswer(userAnswer);
+    console.log("User answer:", userAnswer, "Correct answer:", correctAnswer);
+    console.log("Correct ? ", userAnswer === correctAnswer);
+    if (userAnswer === correctAnswer) {
         currentQuizIndex++;
         if (currentQuizIndex >= emojiQuizData.length) {
             alert("🎉 You win! All answers correct!");
@@ -225,6 +226,16 @@ function checkAnswer(userAnswer) {
     } else {
         alert("Incorrect! Try again.");
     }
+}
+
+function normalizeAnswer(str) {
+    return str
+        .toLowerCase()
+        .replace(/[’‘]/g, "'")          // normalize curly quotes
+        .replace(/[“”]/g, '"')          // normalize curly double quotes
+        .replace(/[^a-z0-9\s]/gi, "")   // remove punctuation (keep letters/numbers/spaces)
+        .replace(/\s+/g, " ")           // collapse multiple spaces
+        .trim();
 }
 
 
