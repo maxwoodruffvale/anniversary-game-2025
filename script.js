@@ -1,6 +1,8 @@
 import { handleEmojiMinigame } from './emojiquiz.js';
 import { handleJigsawMinigame } from "./JigsawMinigame.js";
 import { handleJWordSearchMinigame } from "./WordSearchGame.js";
+import { handleCaesarCipherMinigame } from "./CaesarCipher.js";
+
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -129,6 +131,10 @@ function loadMinigame(interactableName) {
     case "WallPosters":
         handleJWordSearchMinigame();
         break;
+    case "DeskLeft":
+        handleCaesarCipherMinigame();
+        break;
+    
     default:
         alert("No minigame assigned for " + interactableName);
     }
