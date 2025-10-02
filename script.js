@@ -2,7 +2,7 @@ import { handleEmojiMinigame } from './emojiquiz.js';
 import { handleJigsawMinigame } from "./JigsawMinigame.js";
 import { handleJWordSearchMinigame } from "./WordSearchGame.js";
 import { handleCaesarCipherMinigame } from "./CaesarCipher.js";
-
+import { handleMouseHuntMinigame } from './mouseHuntingMinigame.js';
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -134,7 +134,9 @@ function loadMinigame(interactableName) {
     case "DeskLeft":
         handleCaesarCipherMinigame();
         break;
-    
+    case "DoorLeft":
+        handleMouseHuntMinigame();
+        break;
     default:
         alert("No minigame assigned for " + interactableName);
     }
