@@ -1,5 +1,5 @@
 import { handleEmojiMinigame } from './emojiquiz.js';
-import { handleJigsawMinigame } from "./jigsawMinigame.js";
+import { handleJigsawMinigame } from "./JigsawMinigame.js";
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -121,6 +121,9 @@ function loadMinigame(interactableName) {
     switch (interactableName) {
     case "ComputerDesk":
         handleEmojiMinigame();
+        break;
+    case "WallPicture":
+        handleJigsawMinigame();
         break;
     default:
         alert("No minigame assigned for " + interactableName);
