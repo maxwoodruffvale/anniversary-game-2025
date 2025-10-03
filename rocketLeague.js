@@ -80,10 +80,10 @@ export function handleSoccerMinigame() {
 
   let carX = 0;
   let carY = 225;
-  let carSpeed = 2;
+  let carSpeed = 3;
   let carDirection = 1; // 1 = right, -1 = left
   let carFlipped = false;
-  let carSize = 1;
+  let carSize = 1.5;
 
   let ball = null;
   let score = 0;
@@ -105,7 +105,7 @@ export function handleSoccerMinigame() {
         carFlipped = true;
         carDirection = 1;
         carX = 0;
-    } else if (carX + 200 >= canvas.width) {
+    } else if (carX + 100 >= canvas.width) {
         carFlipped = false;
         carDirection = -1;
         carX = canvas.width - 200;
@@ -124,37 +124,34 @@ export function handleSoccerMinigame() {
 
     // Ball
     if (ball) {
-      ball.y -= ball.speed;
-      ball.size *= 0.98;
-      if (ball.size < 20) {
-        // Check collision with car
-        const carRect = { x: carX, y: 200, w: 200, h: 60 };
-        if (
-          ball.x > carRect.x &&
-          ball.x < carRect.x + carRect.w &&
-          ball.y > carRect.y &&
-          ball.y < carRect.y + carRect.h
-        ) {
-          ball = null;
+        ball.y -= ball.speed;
+        ball.size *= 0.98;
+        if (ball.size > 20) {
+            // Check collision with car
+            const carWidth = 100 * carSize;
+            const carHeight = 60 * carSize;
+            const carRect = {x: carX, y: carY, w: carWidth, h: carHeight};
+            if (ball.x > carRect.x && ball.x < carRect.x + carRect.w && ball.y > carRect.y && ball.y < carRect.y + carRect.h) {
+                ball = null;
+            } else {
+                ctx.drawImage(
+                ballImg,
+                ball.x - ball.size / 2,
+                ball.y - ball.size / 2,
+                ball.size,
+                ball.size
+                );
+            }
         } else {
-          score++;
-          scoreDiv.textContent = `Score: ${score} / 10`;
-          if (score >= 10) {
-            alert("⚽ You win! Scored 10 goals!");
-            overlay.remove();
-            return;
-          }
-          ball = null;
+            score++;
+            scoreDiv.textContent = `Score: ${score} / 10`;
+            if (score >= 10) {
+                alert("⚽ You win! Scored 10 goals!");
+                overlay.remove();
+                return;
+            }
+            ball = null;
         }
-      } else {
-        ctx.drawImage(
-          ballImg,
-          ball.x - ball.size / 2,
-          ball.y - ball.size / 2,
-          ball.size,
-          ball.size
-        );
-      }
     }
 
     requestAnimationFrame(draw);
