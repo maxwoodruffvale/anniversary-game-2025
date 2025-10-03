@@ -9,7 +9,6 @@ export const emojiQuizData = [
     { emojis: "🏡🧀🥣", answer: "Cottage cheese" },
     { emojis: "🐕🟤🟡", answer: "Mocha and Teddy" },
     { emojis: "🤣👉💪", answer: "Wenis" },
-    { emojis: "🐀🧀🙋‍♂️", answer: "Rat" },
     { emojis: "🎬👩‍❤️‍👨🦴", answer: "Together" },
 ];
 

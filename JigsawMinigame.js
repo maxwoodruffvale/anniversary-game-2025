@@ -149,7 +149,7 @@ function checkWin(container) {
   // if all tiles are in correct position -> win
   if (correctCount === GRID_SIZE * GRID_SIZE) {
     setTimeout(() => {
-      alert("🎉 You win!");
+      alert("🎉 You win! Your clue is 23");
       const overlay = document.getElementById("jigsawOverlay");
       if (overlay) overlay.remove();
     }, 150);

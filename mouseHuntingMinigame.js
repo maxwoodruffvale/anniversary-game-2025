@@ -121,7 +121,7 @@ function endGame() {
   if (!overlay) return;
 
   if (score >= 18) {
-    alert(`🎉 You win! Final score: ${score}/${20}`);
+    alert(`🎉 You win! Final score: ${score}/${20}. Your clue is 0`);
     overlay.remove();
   } else {
     if (confirm(`😢 You lose! Final score: ${score}/${20}. Play again?`)) {
