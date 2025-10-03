@@ -3,6 +3,7 @@ import { handleJigsawMinigame } from "./JigsawMinigame.js";
 import { handleJWordSearchMinigame } from "./WordSearchGame.js";
 import { handleCaesarCipherMinigame } from "./CaesarCipher.js";
 import { handleMouseHuntMinigame } from './mouseHuntingMinigame.js';
+import { handleSoccerMinigame } from './rocketLeague.js';
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -137,8 +138,12 @@ function loadMinigame(interactableName) {
     case "DoorLeft":
         handleMouseHuntMinigame();
         break;
+    case "TV":
+        handleSoccerMinigame();
+        break;
     default:
-        alert("No minigame assigned for " + interactableName);
+        console.log("No minigame assigned for:", interactableName);
+        break;
     }
 }
 
