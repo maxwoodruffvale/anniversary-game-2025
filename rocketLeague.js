@@ -146,7 +146,7 @@ export function handleSoccerMinigame() {
             score++;
             scoreDiv.textContent = `Score: ${score} / 10`;
             if (score >= 10) {
-                alert("⚽ You win! Scored 10 goals!");
+                alert("⚽ You win! Scored 10 goals! Your clue is: 10");
                 overlay.remove();
                 return;
             }
