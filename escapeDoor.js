@@ -44,7 +44,7 @@ export function handlePasswordMinigame() {
 
   submitBtn.onclick = () => {
     if (input.value === "10032023") {
-      window.location.href = "https://www.google.com"; // change to your actual page
+      window.location.href = encodeURI("https://drive.google.com/file/d/1PS9BD4u9ec5WirV6dE3oME5--k_lNmID/view?usp=sharing");
     } else {
       alert("❌ Incorrect password. Try again.");
       overlay.remove();
