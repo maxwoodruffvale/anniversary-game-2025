@@ -4,6 +4,7 @@ import { handleJWordSearchMinigame } from "./WordSearchGame.js";
 import { handleCaesarCipherMinigame } from "./CaesarCipher.js";
 import { handleMouseHuntMinigame } from './mouseHuntingMinigame.js';
 import { handleSoccerMinigame } from './rocketLeague.js';
+import { handlePasswordMinigame } from './escapeDoor.js';
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -140,6 +141,9 @@ function loadMinigame(interactableName) {
         break;
     case "TV":
         handleSoccerMinigame();
+        break;
+    case "DoorRight":
+        handlePasswordMinigame();
         break;
     default:
         console.log("No minigame assigned for:", interactableName);
